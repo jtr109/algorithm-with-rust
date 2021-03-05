@@ -13,7 +13,10 @@ struct Node<T> {
     next: Link<T>,
 }
 
-impl<T> Queue<T> {
+impl<T> Queue<T>
+where
+    T: Copy,
+{
     pub fn new() -> Self {
         Queue {
             head: None,
@@ -35,18 +38,12 @@ impl<T> Queue<T> {
         };
     }
 
-    // pub fn dequeue(&mut self) -> Option<T> {
-    //     // match self.head.take() {
-    //     //     Some(first_node) => {
-    //     //         self.head = first_node.borrow_mut().next.clone();
-    //     //     }
-    //     //     None => None,
-    //     // }
-    //     self.head.take().map(|first_node| {
-    //         self.head = first_node.borrow_mut().next.clone();
-    //         first_node.borrow_mut().elem
-    //     })
-    // }
+    pub fn dequeue(&mut self) -> Option<T> {
+        self.head.take().and_then(|first_node| {
+            self.head = first_node.borrow_mut().next.clone();
+            Some(first_node.borrow_mut().elem)
+        })
+    }
 }
 
 #[cfg(test)]
@@ -58,5 +55,10 @@ mod test {
         let mut queue = Queue::new();
         queue.enqueue(1);
         queue.enqueue(2);
+        queue.enqueue(3);
+        assert_eq!(queue.dequeue(), Some(1));
+        assert_eq!(queue.dequeue(), Some(2));
+        assert_eq!(queue.dequeue(), Some(3));
+        assert_eq!(queue.dequeue(), None);
     }
 }
