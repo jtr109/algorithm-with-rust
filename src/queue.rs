@@ -39,9 +39,9 @@ where
     }
 
     pub fn dequeue(&mut self) -> Option<T> {
-        self.head.take().and_then(|first_node| {
+        self.head.take().map(|first_node| {
             self.head = first_node.borrow_mut().next.clone();
-            Some(first_node.borrow_mut().elem)
+            first_node.borrow_mut().elem
         })
     }
 }
