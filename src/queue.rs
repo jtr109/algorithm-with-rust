@@ -44,6 +44,12 @@ where
             first_node.borrow_mut().elem
         })
     }
+
+    pub fn peek(&self) -> Option<T> {
+        self.head
+            .clone()
+            .map(|cell_node| Rc::try_unwrap(cell_node).ok().unwrap().into_inner().elem)
+    }
 }
 
 #[cfg(test)]
