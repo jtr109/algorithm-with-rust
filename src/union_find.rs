@@ -22,16 +22,10 @@ impl UnionFind for UF {
     }
 
     fn union(&mut self, p: usize, q: usize) {
-        let p_id = self.find(p);
-        let q_id = self.find(q);
-        if p_id == q_id {
+        if self.connected(p, q) {
             return;
         }
-        for i in self.id.iter_mut() {
-            if *i == q_id {
-                *i = p_id;
-            }
-        }
+        self.id[p] = q;
         self.count -= 1;
     }
 
@@ -39,7 +33,11 @@ impl UnionFind for UF {
         if p >= self.id.len() {
             panic!("index out of range")
         }
-        self.id[p]
+        let mut i = p;
+        while self.id[i] != i {
+            i = self.id[i]
+        }
+        i
     }
 
     fn connected(&self, p: usize, q: usize) -> bool {
