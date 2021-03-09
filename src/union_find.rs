@@ -10,6 +10,7 @@ trait UnionFind {
 
 pub struct UF {
     id: Vec<usize>,
+    sz: Vec<usize>,
     count: usize,
 }
 
@@ -17,6 +18,7 @@ impl UnionFind for UF {
     fn new(n: usize) -> Self {
         UF {
             id: (0..n).collect(),
+            sz: vec![1; n],
             count: n,
         }
     }
@@ -25,7 +27,15 @@ impl UnionFind for UF {
         if self.connected(p, q) {
             return;
         }
-        self.id[p] = q;
+        let p_root_id = self.find(p);
+        let q_root_id = self.find(q);
+        if self.sz[p_root_id] < self.sz[q_root_id] {
+            self.id[p_root_id] = q_root_id;
+            self.sz[p_root_id] += self.sz[q_root_id];
+        } else {
+            self.id[q_root_id] = p_root_id;
+            self.sz[q_root_id] += self.sz[p_root_id];
+        }
         self.count -= 1;
     }
 
