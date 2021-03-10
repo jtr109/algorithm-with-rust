@@ -28,17 +28,26 @@ pub fn insertion_sort<T: std::cmp::PartialOrd>(a: &mut Vec<T>) {
 mod test {
     use super::*;
 
+    fn is_sorted<T: std::cmp::PartialOrd>(a: Vec<T>) -> bool {
+        for i in 1..a.len() {
+            if a[i - 1] > a[i] {
+                return false;
+            }
+        }
+        true
+    }
+
     #[test]
     fn test_selection_sort() {
         let mut a = vec![3, 1, 2, 5, 4];
         selection_sort(&mut a);
-        assert_eq!(a, vec![1, 2, 3, 4, 5]);
+        assert!(is_sorted(a));
     }
 
     #[test]
     fn test_insertion_sort() {
         let mut a = vec![3, 1, 2, 5, 4];
         insertion_sort(&mut a);
-        assert_eq!(a, vec![1, 2, 3, 4, 5]);
+        assert!(is_sorted(a));
     }
 }
