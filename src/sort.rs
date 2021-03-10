@@ -25,9 +25,20 @@ pub fn insertion_sort<T: std::cmp::PartialOrd>(a: &mut Vec<T>) {
 }
 
 pub fn shell_sort<T: std::cmp::PartialOrd>(a: &mut Vec<T>) {
+    let length = a.len();
     let mut h: usize = 1;
-    while h < a.len() / 3 {
+    while h < length / 3 {
         h = 3 * h + 1;
+    }
+    while h >= 1 {
+        for i in h..length {
+            let mut j = i;
+            while j >= h && a[j] < a[j - h] {
+                a.swap(j, j - h);
+                j -= h;
+            }
+        }
+        h /= 3;
     }
 }
 
@@ -63,6 +74,13 @@ mod test {
     fn test_insertion_sort() {
         let mut a = create_shuffled_vector(1_000);
         insertion_sort(&mut a);
+        assert!(is_sorted(&a));
+    }
+
+    #[test]
+    fn test_shell_sort() {
+        let mut a = create_shuffled_vector(1_000);
+        shell_sort(&mut a);
         assert!(is_sorted(&a));
     }
 }
