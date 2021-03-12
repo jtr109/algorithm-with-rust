@@ -42,6 +42,30 @@ pub fn shell_sort<T: std::cmp::PartialOrd>(a: &mut Vec<T>) {
     }
 }
 
+/// assume that both left and right parts are sorted
+fn merge<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>, lo: usize, mid: usize, hi: usize) {
+    let mut i = lo;
+    let mut j = mid + 1;
+    let aux = a.clone();
+    let mut k = lo;
+    while k <= hi {
+        if i > mid {
+            a[k] = aux[j];
+            j += 1;
+        } else if j > hi {
+            a[k] = aux[i];
+            i += 1;
+        } else if aux[i] < aux[j] {
+            a[k] = aux[i];
+            i += 1;
+        } else {
+            a[k] = aux[j];
+            j += 1;
+        }
+        k += 1;
+    }
+}
+
 #[cfg(test)]
 mod test {
     use rand::prelude::SliceRandom;
@@ -81,6 +105,13 @@ mod test {
     fn test_shell_sort() {
         let mut a = create_shuffled_vector(1_000);
         shell_sort(&mut a);
+        assert!(is_sorted(&a));
+    }
+
+    #[test]
+    fn test_merge() {
+        let mut a = "EEGMRACERT".chars().collect(); // cSpell: disable-line
+        merge(&mut a, 0, 4, 9);
         assert!(is_sorted(&a));
     }
 }
