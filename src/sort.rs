@@ -66,6 +66,19 @@ fn merge<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>, lo: usize, mid: usize, 
     }
 }
 
+pub fn merge_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>) {
+    fn sort<T: std::cmp::PartialOrd + Copy>(mut a: &mut Vec<T>, lo: usize, hi: usize) {
+        if lo >= hi {
+            return;
+        }
+        let mid = (lo + hi) / 2;
+        sort(&mut a, lo, mid);
+        sort(&mut a, mid + 1, hi);
+        merge(&mut a, lo, mid, hi);
+    }
+    sort(a, 0, a.len() - 1);
+}
+
 #[cfg(test)]
 mod test {
     use rand::prelude::SliceRandom;
@@ -112,6 +125,13 @@ mod test {
     fn test_merge() {
         let mut a = "EEGMRACERT".chars().collect(); // cSpell: disable-line
         merge(&mut a, 0, 4, 9);
+        assert!(is_sorted(&a));
+    }
+
+    #[test]
+    fn test_merge_sort() {
+        let mut a = create_shuffled_vector(1_000);
+        merge_sort(&mut a);
         assert!(is_sorted(&a));
     }
 }
