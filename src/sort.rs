@@ -66,17 +66,18 @@ fn merge<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>, lo: usize, mid: usize, 
     }
 }
 
-pub fn merge_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>) {
-    fn sort<T: std::cmp::PartialOrd + Copy>(mut a: &mut Vec<T>, lo: usize, hi: usize) {
-        if lo >= hi {
-            return;
-        }
-        let mid = (lo + hi) / 2;
-        sort(&mut a, lo, mid);
-        sort(&mut a, mid + 1, hi);
-        merge(&mut a, lo, mid, hi);
+fn iter_merge_sort<T: std::cmp::PartialOrd + Copy>(mut a: &mut Vec<T>, lo: usize, hi: usize) {
+    if lo >= hi {
+        return;
     }
-    sort(a, 0, a.len() - 1);
+    let mid = (lo + hi) / 2;
+    iter_merge_sort(&mut a, lo, mid);
+    iter_merge_sort(&mut a, mid + 1, hi);
+    merge(&mut a, lo, mid, hi);
+}
+
+pub fn merge_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>) {
+    iter_merge_sort(a, 0, a.len() - 1);
 }
 
 #[cfg(test)]
