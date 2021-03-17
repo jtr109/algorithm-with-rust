@@ -80,6 +80,18 @@ pub fn merge_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>) {
     iter_merge_sort(a, 0, a.len() - 1);
 }
 
+pub fn merge_bu_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>) {
+    let mut sz: usize = 1;
+    while sz < a.len() {
+        let mut lo = 0;
+        while lo < a.len() {
+            merge(a, lo, lo + sz - 1, (lo + 2 * sz - 1).min(a.len() - 1));
+            lo += 2 * sz;
+        }
+        sz *= 2;
+    }
+}
+
 #[cfg(test)]
 mod test {
     use rand::prelude::SliceRandom;
@@ -133,6 +145,14 @@ mod test {
     fn test_merge_sort() {
         let mut a = create_shuffled_vector(1_000);
         merge_sort(&mut a);
+        assert!(is_sorted(&a));
+    }
+
+    #[test]
+    fn test_merge_bu_sort() {
+        let mut a = create_shuffled_vector(1_000);
+        merge_bu_sort(&mut a);
+        println!("{:?}", a);
         assert!(is_sorted(&a));
     }
 }
