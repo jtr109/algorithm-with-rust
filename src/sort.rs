@@ -136,8 +136,6 @@ fn quick_part_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>, lo: usize, hi
 
 #[cfg(test)]
 mod test {
-    use rand::prelude::SliceRandom;
-
     use super::*;
 
     fn is_sorted<T: std::cmp::PartialOrd>(a: &Vec<T>) -> bool {
