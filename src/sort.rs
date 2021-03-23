@@ -1,3 +1,5 @@
+use rand::prelude::SliceRandom;
+
 pub fn selection_sort<T: std::cmp::PartialOrd>(a: &mut Vec<T>) {
     for i in 0..a.len() {
         let mut min = &a[i];
@@ -93,6 +95,7 @@ pub fn merge_bu_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>) {
 }
 
 pub fn quick_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>) {
+    a.shuffle(&mut rand::thread_rng());
     quick_part_sort(a, 0, a.len() - 1);
 }
 
