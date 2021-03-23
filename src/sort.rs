@@ -92,6 +92,44 @@ pub fn merge_bu_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>) {
     }
 }
 
+pub fn quick_sort<T: std::cmp::PartialOrd>(a: &mut Vec<T>) {
+    quick_part_sort(a, 0, a.len() - 1);
+}
+
+fn quick_partition<T: std::cmp::PartialOrd>(a: &mut Vec<T>, lo: usize, hi: usize) -> usize {
+    let mut i = lo + 1;
+    let mut j = hi;
+    loop {
+        loop {
+            if a[i] > a[lo] || i > hi {
+                break;
+            }
+            i += 1;
+        }
+        loop {
+            if a[lo] < a[j] || j < lo {
+                break;
+            }
+            j -= 1;
+        }
+        if i >= j {
+            break;
+        }
+        a.swap(i, j);
+    }
+    a.swap(lo, j);
+    return j;
+}
+
+fn quick_part_sort<T: std::cmp::PartialOrd>(a: &mut Vec<T>, lo: usize, hi: usize) {
+    if hi <= lo {
+        return;
+    }
+    let j = quick_partition(a, lo, hi);
+    quick_part_sort(a, lo, j - 1);
+    quick_part_sort(a, j, hi);
+}
+
 #[cfg(test)]
 mod test {
     use rand::prelude::SliceRandom;
@@ -152,6 +190,14 @@ mod test {
     fn test_merge_bu_sort() {
         let mut a = create_shuffled_vector(1_000);
         merge_bu_sort(&mut a);
+        println!("{:?}", a);
+        assert!(is_sorted(&a));
+    }
+
+    #[test]
+    fn test_quick_sort() {
+        let mut a = create_shuffled_vector(1_000);
+        quick_sort(&mut a);
         println!("{:?}", a);
         assert!(is_sorted(&a));
     }
