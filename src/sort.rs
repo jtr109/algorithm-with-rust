@@ -92,25 +92,26 @@ pub fn merge_bu_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>) {
     }
 }
 
-pub fn quick_sort<T: std::cmp::PartialOrd>(a: &mut Vec<T>) {
+pub fn quick_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>) {
     quick_part_sort(a, 0, a.len() - 1);
 }
 
-fn quick_partition<T: std::cmp::PartialOrd>(a: &mut Vec<T>, lo: usize, hi: usize) -> usize {
-    let mut i = lo + 1;
-    let mut j = hi;
+fn quick_partition<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>, lo: usize, hi: usize) -> usize {
+    let mut i = lo;
+    let mut j = hi + 1;
+    let v = a[lo];
     loop {
         loop {
-            if a[i] > a[lo] || i > hi {
+            i += 1;
+            if a[i] >= v || i == hi {
                 break;
             }
-            i += 1;
         }
         loop {
-            if a[lo] < a[j] || j < lo {
+            j -= 1;
+            if v >= a[j] || j == lo {
                 break;
             }
-            j -= 1;
         }
         if i >= j {
             break;
@@ -121,13 +122,13 @@ fn quick_partition<T: std::cmp::PartialOrd>(a: &mut Vec<T>, lo: usize, hi: usize
     return j;
 }
 
-fn quick_part_sort<T: std::cmp::PartialOrd>(a: &mut Vec<T>, lo: usize, hi: usize) {
+fn quick_part_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>, lo: usize, hi: usize) {
     if hi <= lo {
         return;
     }
     let j = quick_partition(a, lo, hi);
     quick_part_sort(a, lo, j - 1);
-    quick_part_sort(a, j, hi);
+    quick_part_sort(a, j + 1, hi);
 }
 
 #[cfg(test)]
