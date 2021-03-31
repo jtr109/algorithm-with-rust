@@ -2,15 +2,11 @@
 
 pub struct MaxPQ<T: std::cmp::PartialOrd + Copy> {
     elements: Vec<T>,
-    max: usize,
 }
 
 impl<T: std::cmp::PartialOrd + Copy> MaxPQ<T> {
     pub fn new() -> Self {
-        MaxPQ {
-            max: 0,
-            elements: vec![],
-        }
+        MaxPQ { elements: vec![] }
     }
 
     fn swim(&mut self, mut k: usize) {
@@ -40,8 +36,7 @@ impl<T: std::cmp::PartialOrd + Copy> MaxPQ<T> {
             self.elements.push(v);
         }
         self.elements.push(v);
-        self.max += 1;
-        self.swim(self.max);
+        self.swim(self.size());
     }
 
     pub fn max(&self) -> Option<T> {
@@ -58,7 +53,12 @@ impl<T: std::cmp::PartialOrd + Copy> MaxPQ<T> {
     }
 
     pub fn size(&self) -> usize {
-        self.max
+        let s = self.elements.len();
+        if s != 0 {
+            s - 1
+        } else {
+            s
+        }
     }
 }
 
@@ -69,7 +69,6 @@ mod test {
     #[test]
     fn test_swim_on_even_index() {
         let mut pq = MaxPQ {
-            max: 0, // unused
             elements: vec![0, 1, 2],
         };
         pq.swim(2);
@@ -79,7 +78,6 @@ mod test {
     #[test]
     fn test_swim_on_odd_index() {
         let mut pq = MaxPQ {
-            max: 0, // unused
             elements: vec![0, 2, 1, 3],
         };
         pq.swim(3);
@@ -89,7 +87,6 @@ mod test {
     #[test]
     fn test_skin() {
         let mut pq = MaxPQ {
-            max: 8,
             elements: vec![1, 2, 10, 9, 8, 7, 6, 5, 4],
         };
         pq.sink(1);
