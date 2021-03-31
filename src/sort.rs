@@ -196,7 +196,7 @@ mod test {
         assert!(is_sorted(&a));
     }
 
-    #[test]
+    // #[test]
     fn test_quick_sort() {
         let mut a = create_shuffled_vector(1_000);
         quick_sort(&mut a);
