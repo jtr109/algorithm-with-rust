@@ -17,10 +17,6 @@ impl<T: std::cmp::PartialOrd + Copy> MaxPQ<T> {
     }
 
     fn sink(&mut self, mut k: usize) {
-        while 2 * k <= self.size() && self.elements[k] < self.elements[k * 2] {
-            self.elements.swap(k, 2 * k);
-            k *= 2;
-        }
         while 2 * k <= self.size() {
             let mut j = 2 * k;
             if j < self.size() && self.elements[j] < self.elements[j + 1] {
@@ -46,7 +42,14 @@ impl<T: std::cmp::PartialOrd + Copy> MaxPQ<T> {
             Some(self.elements[1])
         }
     }
-    pub fn del_max() {}
+
+    pub fn del_max(&mut self) {
+        if self.size() > 1 {
+            self.elements[1] = self.elements[self.elements.len() - 1];
+            self.sink(1);
+        }
+        self.elements.pop();
+    }
 
     pub fn is_empty(&self) -> bool {
         self.size() <= 1
@@ -111,5 +114,14 @@ mod test {
         assert_eq!(pq.size(), 2);
         assert_eq!(pq.elements[1], 3);
         assert_eq!(pq.elements[2], 2);
+    }
+
+    #[test]
+    fn test_delete_max() {
+        let mut pq = MaxPQ {
+            elements: vec![1, 10, 8, 9, 4, 7, 6, 5, 2],
+        };
+        pq.del_max();
+        assert_eq!(pq.elements, vec![1, 9, 8, 6, 4, 7, 2, 5]);
     }
 }
