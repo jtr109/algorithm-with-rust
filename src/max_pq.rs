@@ -22,6 +22,9 @@ impl<T: std::cmp::PartialOrd + Copy> MaxPQ<T> {
             if j < self.size() && self.elements[j] < self.elements[j + 1] {
                 j += 1;
             }
+            if self.elements[k] > self.elements[j] {
+                break;
+            }
             self.elements.swap(k, j);
             k = j;
         }

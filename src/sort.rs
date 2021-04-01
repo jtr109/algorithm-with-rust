@@ -1,3 +1,5 @@
+use std::{fmt::Debug, iter::Copied, usize};
+
 use rand::prelude::SliceRandom;
 
 pub fn selection_sort<T: std::cmp::PartialOrd>(a: &mut Vec<T>) {
@@ -134,6 +136,34 @@ fn quick_part_sort<T: std::cmp::PartialOrd + Copy>(a: &mut Vec<T>, lo: usize, hi
     quick_part_sort(a, j + 1, hi);
 }
 
+fn sink<T: std::cmp::PartialOrd>(a: &mut Vec<T>, mut k: usize, last: usize) {
+    while 2 * k <= last {
+        let mut j = 2 * k;
+        if j < last && a[j] < a[j + 1] {
+            j += 1;
+        }
+        if a[k] > a[j] {
+            break;
+        }
+        a.swap(k, j);
+        k = j;
+    }
+}
+
+pub fn pq_sort<T: std::cmp::PartialOrd + Copy + Debug>(a: &mut Vec<T>) {
+    a.insert(0, a[0]);
+    for i in (1..=a.len() / 2).rev() {
+        sink(a, i, a.len() - 1);
+    }
+    // 堆有序
+    // println!("pq sorted: {:?}", a);
+    for i in (2..a.len()).rev() {
+        a.swap(1, i);
+        sink(a, 1, i - 1); // 被放在最后的元素不要再参与 sink
+    }
+    a.remove(0);
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -200,6 +230,14 @@ mod test {
     fn test_quick_sort() {
         let mut a = create_shuffled_vector(1_000);
         quick_sort(&mut a);
+        println!("{:?}", a);
+        assert!(is_sorted(&a));
+    }
+
+    #[test]
+    fn test_pq_sort() {
+        let mut a = create_shuffled_vector(1_000);
+        pq_sort(&mut a);
         println!("{:?}", a);
         assert!(is_sorted(&a));
     }
