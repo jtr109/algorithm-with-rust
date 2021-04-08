@@ -1,4 +1,4 @@
-use std::{fmt::Debug, iter::Copied, usize};
+use std::{fmt::Debug, usize};
 
 use rand::prelude::SliceRandom;
 

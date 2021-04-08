@@ -1,11 +1,11 @@
-pub struct Node<Key: PartialOrd, Value: Copy> {
+pub struct Node<Key: PartialOrd + Copy, Value: Copy> {
     key: Key,
     value: Value,
     left: Option<Box<Node<Key, Value>>>,
     right: Option<Box<Node<Key, Value>>>,
 }
 
-impl<Key: PartialOrd, Value: Copy> Node<Key, Value> {
+impl<Key: PartialOrd + Copy, Value: Copy> Node<Key, Value> {
     pub fn new(key: Key, value: Value) -> Self {
         return Node {
             key,
@@ -40,6 +40,20 @@ impl<Key: PartialOrd, Value: Copy> Node<Key, Value> {
             }
         }
     }
+
+    pub fn min(&self) -> Key {
+        return match &self.left {
+            Some(left) => left.min(),
+            None => self.key,
+        };
+    }
+
+    pub fn max(&self) -> Key {
+        return match &self.right {
+            Some(right) => right.max(),
+            None => self.key,
+        };
+    }
 }
 
 #[cfg(test)]
@@ -47,7 +61,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn test() {
+    fn test_put_and_get() {
         let mut node = Node::new(1, "1");
         node.put(2, "2");
         node.put(3, "3");
@@ -55,5 +69,16 @@ mod test {
         assert_eq!(node.get(2), Some("2"));
         assert_eq!(node.get(3), Some("3"));
         assert_eq!(node.get(4), None);
+    }
+
+    #[test]
+    fn test_min_and_max() {
+        let mut node = Node::new(2, "2");
+        node.put(1, "1");
+        node.put(3, "3");
+        node.put(5, "5");
+        node.put(4, "4");
+        assert_eq!(node.min(), 1);
+        assert_eq!(node.max(), 5);
     }
 }
