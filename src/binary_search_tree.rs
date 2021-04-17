@@ -49,11 +49,21 @@ impl<Key: PartialOrd + Copy, Value: Copy> Node<Key, Value> {
     }
 
     pub fn max(&self) -> Key {
-        return match &self.right {
+        match &self.right {
             Some(right) => right.max(),
             None => self.key,
-        };
+        }
     }
+
+    // pub fn delete_min(&mut self) -> Option<Box<Self>> {
+    //     match self.left {
+    //         None => self.right,
+    //         Some(left) => {
+    //             self.left = left.delete_min();
+    //             Some(Box::new(self))
+    //         }
+    //     }
+    // }
 }
 
 #[cfg(test)]
