@@ -43,6 +43,7 @@ impl DepthFirstPaths {
             w = self.edge_to[w].unwrap();
             path.push(w)
         }
+        path.reverse();
         path
     }
 }
