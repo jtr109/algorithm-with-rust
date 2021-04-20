@@ -25,7 +25,7 @@ impl DepthFirstSearch {
         }
     }
 
-    fn marked(&self, s: usize) -> bool {
+    pub fn marked(&self, s: usize) -> bool {
         self.marked[s]
     }
 

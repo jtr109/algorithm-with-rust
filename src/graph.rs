@@ -50,6 +50,6 @@ impl Graph {
     }
 
     pub fn adj(&self, i: usize) -> HashSet<usize> {
-        self.adj[i]
+        self.adj[i].clone()
     }
 }
