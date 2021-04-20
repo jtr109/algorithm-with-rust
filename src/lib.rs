@@ -1,4 +1,5 @@
 pub mod binary_search_tree;
+pub mod depth_first_paths;
 pub mod dfs;
 pub mod graph;
 pub mod max_pq;
