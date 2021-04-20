@@ -48,4 +48,8 @@ impl Graph {
             .filter(|(v, vertexes)| vertexes.get(v).is_some())
             .count()
     }
+
+    pub fn adj(&self, i: usize) -> HashSet<usize> {
+        self.adj[i]
+    }
 }
