@@ -9,12 +9,14 @@ pub struct DepthFirstPaths {
 
 impl DepthFirstPaths {
     pub fn new(graph: Graph, start: usize) -> Self {
-        Self {
+        let mut depth_first_paths = Self {
             marked: vec![false; graph.vertex_count()],
             edge_to: vec![None; graph.vertex_count()],
             start,
             graph,
-        }
+        };
+        depth_first_paths.dfs(start);
+        depth_first_paths
     }
 
     pub fn dfs(&mut self, v: usize) {
