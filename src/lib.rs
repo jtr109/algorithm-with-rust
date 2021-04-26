@@ -3,6 +3,7 @@ pub mod breadth_first_paths;
 pub mod depth_first_paths;
 pub mod dfs;
 pub mod digraph;
+pub mod directed_dfs;
 pub mod graph;
 pub mod max_pq;
 pub mod queue;
