@@ -1,21 +1,21 @@
-use crate::graph::Graph;
+use crate::digraph::Digraph;
 
 pub struct DepthFirstOrder<'a> {
-    graph: &'a Graph,
+    graph: &'a Digraph,
     marked: Vec<bool>,
     pre: Vec<usize>,
     post: Vec<usize>,
 }
 
 impl<'a> DepthFirstOrder<'a> {
-    pub fn new(graph: &'a Graph) -> Self {
+    pub fn new(graph: &'a Digraph) -> Self {
         let mut s = Self {
             graph,
-            marked: vec![false; graph.vertex_count()],
+            marked: vec![false; graph.vertex()],
             pre: vec![],
             post: vec![],
         };
-        for v in 0..graph.vertex_count() {
+        for v in 0..graph.vertex() {
             if s.marked[v] {
                 continue;
             }
