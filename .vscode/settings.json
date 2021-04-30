@@ -1,5 +1,7 @@
 {
     "cSpell.words": [
-        "CCAPI"
-    ]
+        "CCAPI",
+        "weigthed"
+    ],
+    "rust-analyzer.inlayHints.enable": true
 }
