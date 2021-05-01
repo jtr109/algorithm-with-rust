@@ -1,6 +1,6 @@
-use std::cmp::Ordering;
+use std::{cmp::Ordering, collections::HashSet};
 
-#[derive(Eq)]
+#[derive(Eq, Hash)]
 pub struct Edge {
     weight: usize,
     v: usize,
@@ -52,10 +52,54 @@ impl PartialEq for Edge {
     }
 }
 
-// struct EdgeWeightedGraph {
-//     fn vertex_count(&self) -> usize;
-//     fn edge_count(&self) -> usize;
-//     fn add_edge(&self, e: Edge) -> usize;
-//     fn adj(&self, v: usize) -> Vec<Edge>;
-//     fn edges(&self) -> Vec<Edge>;
-// }
+pub struct EdgeWeightedGraph<'a> {
+    vertex_count: usize,
+    edge_count: usize,
+    adj: Vec<HashSet<&'a Edge>>,
+}
+
+impl<'a> EdgeWeightedGraph<'a> {
+    pub fn new(vertex_count: usize) -> Self {
+        Self {
+            vertex_count,
+            edge_count: 0,
+            adj: vec![HashSet::new(); vertex_count],
+        }
+    }
+
+    /// 图的顶点数
+    pub fn vertex_count(&self) -> usize {
+        self.vertex_count
+    }
+
+    /// 图的边数
+    pub fn edge_count(&self) -> usize {
+        self.edge_count
+    }
+
+    /// 向图中添加一条边 e
+    pub fn add_edge(&mut self, e: &'a Edge) {
+        let v = e.either();
+        let w = e.other(v);
+        self.adj[v].insert(e);
+        self.adj[w].insert(e);
+    }
+
+    /// 和 v 相关联的所有边
+    pub fn adj(&self, v: usize) -> HashSet<&'a Edge> {
+        self.adj[v].clone()
+    }
+
+    /// 图的所有边
+    pub fn edges(&self) -> HashSet<&'a Edge> {
+        let mut b = HashSet::new();
+        for v in 0..self.vertex_count() {
+            for e in self.adj(v) {
+                if e.other(v) > v {
+                    b.insert(e);
+                }
+            }
+        }
+        b
+    }
+}
