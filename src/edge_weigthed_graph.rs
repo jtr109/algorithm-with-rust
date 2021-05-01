@@ -18,7 +18,7 @@ impl Edge {
     }
 
     // 边两端的顶点之一
-    fn either(&self) -> usize {
+    pub fn either(&self) -> usize {
         self.v
     }
 

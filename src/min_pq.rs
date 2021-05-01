@@ -41,6 +41,10 @@ where
         }
     }
 
+    pub fn is_empty(&self) -> bool {
+        return self.elements.len() <= 1;
+    }
+
     /// 插入新元素 v
     pub fn insert(&mut self, v: &'a T) {
         if self.elements.len() == 0 {
@@ -52,7 +56,7 @@ where
     }
 
     /// 弹出最小值
-    pub fn pop_min(&mut self) -> Option<&'a T> {
+    pub fn del_min(&mut self) -> Option<&'a T> {
         match self.size() {
             0 => None,
             1 => self.elements.pop(),
@@ -81,7 +85,7 @@ mod test {
             pq.insert(e);
         }
         for i in 0..100 {
-            assert_eq!(pq.pop_min(), Some(&i));
+            assert_eq!(pq.del_min(), Some(&i));
         }
     }
 }

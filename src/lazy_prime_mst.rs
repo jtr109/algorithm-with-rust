@@ -1,13 +1,14 @@
 use crate::{
     edge_weigthed_graph::{Edge, EdgeWeightedGraph},
     min_pq::MinPQ,
+    queue::Queue,
 };
 
-struct LazyPrimeMST<'a> {
-    marked: Vec<bool>,       // 最小生成树的顶点
-    mst: Vec<&'a Edge>,      // 最小生成树的边
-    pq: MinPQ<'a, &'a Edge>, // 横切边（包括失效的边）
-    graph: EdgeWeightedGraph<'a>,
+pub struct LazyPrimeMST<'a> {
+    marked: Vec<bool>,    // 最小生成树的顶点
+    mst: Queue<&'a Edge>, // 最小生成树的边
+    pq: MinPQ<'a, Edge>,  // 横切边（包括失效的边）
+    graph: &'a EdgeWeightedGraph<'a>,
 }
 
 impl<'a> LazyPrimeMST<'a> {
@@ -21,27 +22,30 @@ impl<'a> LazyPrimeMST<'a> {
             self.pq.insert(&e);
         }
     }
-}
 
-// ❯ cargo build
-//    Compiling algorithms v0.1.0 (/Users/xxx/projects/learn/algorithm-with-rust)
-// error[E0597]: `e` does not live long enough
-//   --> src/lazy_prime_mst.rs:21:28
-//    |
-// 13 | impl<'a> LazyPrimeMST<'a> {
-//    |      -- lifetime `'a` defined here
-// ...
-// 21 |             self.pq.insert(&e);
-//    |             ---------------^^-
-//    |             |              |
-//    |             |              borrowed value does not live long enough
-//    |             argument requires that `e` is borrowed for `'a`
-// 22 |         }
-//    |         - `e` dropped here while still borrowed
-//
-// error: aborting due to previous error
-//
-// For more information about this error, try `rustc --explain E0597`.
-// error: could not compile `algorithms`
-//
-// To learn more, run the command again with --verbose.
+    pub fn new(graph: &'a EdgeWeightedGraph) -> Self {
+        let mut s = Self {
+            marked: vec![false; graph.vertex_count()],
+            mst: Queue::new(),
+            pq: MinPQ::new(),
+            graph,
+        };
+        s.visit(0);
+        while !s.pq.is_empty() {
+            let e = s.pq.del_min().unwrap();
+            let v = e.either();
+            let w = e.other(v);
+            if s.marked[v] && s.marked[w] {
+                continue;
+            }
+            s.mst.enqueue(e);
+            if !s.marked[v] {
+                s.visit(w);
+            }
+            if !s.marked[w] {
+                s.visit(v);
+            }
+        }
+        s
+    }
+}
