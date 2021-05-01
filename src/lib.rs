@@ -11,6 +11,7 @@ pub mod edge_weigthed_graph;
 pub mod graph;
 pub mod lazy_prime_mst;
 pub mod max_pq;
+pub mod min_pq;
 pub mod queue;
 pub mod scc;
 pub mod search;
