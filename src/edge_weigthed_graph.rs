@@ -23,7 +23,7 @@ impl Edge {
     }
 
     // 另一个顶点
-    fn other(&self, v: usize) -> usize {
+    pub fn other(&self, v: usize) -> usize {
         if self.v == v {
             self.w
         } else if self.w == v {
