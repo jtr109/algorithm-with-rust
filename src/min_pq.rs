@@ -1,10 +1,16 @@
-pub struct MinPQ {
-    elements: Vec<usize>,
+pub struct MinPQ<'a, T>
+where
+    T: PartialOrd,
+{
+    elements: Vec<&'a T>,
 }
 
-impl MinPQ {
+impl<'a, T> MinPQ<'a, T>
+where
+    T: PartialOrd,
+{
     pub fn new() -> Self {
-        Self { elements: vec![0] }
+        Self { elements: vec![] }
     }
 
     fn size(&self) -> usize {
@@ -36,14 +42,17 @@ impl MinPQ {
     }
 
     /// 插入新元素 v
-    pub fn insert(&mut self, v: usize) {
+    pub fn insert(&mut self, v: &'a T) {
+        if self.elements.len() == 0 {
+            self.elements.push(v);
+        }
         self.elements.push(v);
         let k = self.size();
         self.swim(k);
     }
 
     /// 弹出最小值
-    pub fn pop_min(&mut self) -> Option<usize> {
+    pub fn pop_min(&mut self) -> Option<&'a T> {
         match self.size() {
             0 => None,
             1 => self.elements.pop(),
@@ -68,11 +77,11 @@ mod test {
         let mut pq = MinPQ::new();
         let mut elements: Vec<usize> = (0..100).collect();
         elements.shuffle(&mut thread_rng());
-        for &e in elements.iter() {
+        for e in elements.iter() {
             pq.insert(e);
         }
         for i in 0..100 {
-            assert_eq!(pq.pop_min(), Some(i));
+            assert_eq!(pq.pop_min(), Some(&i));
         }
     }
 }
