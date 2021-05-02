@@ -8,6 +8,7 @@ pub mod digraph;
 pub mod directed_cycle;
 pub mod directed_dfs;
 pub mod directed_edge;
+pub mod edge_weighted_digraph;
 pub mod edge_weigthed_graph;
 pub mod graph;
 pub mod lazy_prime_mst;
