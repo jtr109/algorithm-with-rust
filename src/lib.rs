@@ -18,5 +18,6 @@ pub mod queue;
 pub mod scc;
 pub mod search;
 pub mod sort;
+pub mod sp;
 pub mod stack;
 pub mod union_find;
