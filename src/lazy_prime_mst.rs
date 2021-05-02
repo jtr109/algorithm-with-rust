@@ -38,7 +38,7 @@ impl<'a> LazyPrimeMST<'a> {
             if s.marked[v] && s.marked[w] {
                 continue;
             }
-            s.mst.enqueue(e);
+            s.mst.enqueue(&e);
             if !s.marked[v] {
                 s.visit(w);
             }
@@ -47,5 +47,9 @@ impl<'a> LazyPrimeMST<'a> {
             }
         }
         s
+    }
+
+    pub fn edges(&self) -> &'a Queue<&Edge> {
+        &self.mst
     }
 }
