@@ -16,4 +16,31 @@ impl<'a> EdgeWeightedDigraph<'a> {
             adj: vec![HashSet::new(); v],
         }
     }
+
+    pub fn vertex_count(&self) -> usize {
+        self.vertex_count
+    }
+
+    pub fn edge_count(&self) -> usize {
+        self.edge_count
+    }
+
+    pub fn add_edge(&mut self, e: &'a DirectedEdge) {
+        self.adj[e.from()].insert(&e);
+        self.edge_count += 1;
+    }
+
+    pub fn adj(&self, v: usize) -> &HashSet<&DirectedEdge> {
+        &self.adj[v]
+    }
+
+    pub fn edges(&self) -> HashSet<&DirectedEdge> {
+        let mut result = HashSet::new();
+        for v in 0..self.vertex_count() {
+            for e in self.adj(v) {
+                result.insert(*e);
+            }
+        }
+        result
+    }
 }
