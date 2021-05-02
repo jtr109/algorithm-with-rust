@@ -1,5 +1,5 @@
 use crate::{
-    edge_weigthed_graph::{Edge, EdgeWeightedGraph},
+    edge_weighted_graph::{Edge, EdgeWeightedGraph},
     min_pq::MinPQ,
     queue::Queue,
 };
