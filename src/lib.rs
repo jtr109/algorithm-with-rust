@@ -12,6 +12,7 @@ pub mod edge_weighted_digraph;
 pub mod edge_weighted_graph;
 pub mod graph;
 pub mod lazy_prime_mst;
+pub mod lsd;
 pub mod max_pq;
 pub mod min_pq;
 pub mod queue;
