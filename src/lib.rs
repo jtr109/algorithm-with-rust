@@ -21,4 +21,5 @@ pub mod search;
 pub mod sort;
 pub mod sp;
 pub mod stack;
+pub mod trie;
 pub mod union_find;
