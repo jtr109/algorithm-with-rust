@@ -23,3 +23,4 @@ pub mod sp;
 pub mod stack;
 pub mod trie;
 pub mod union_find;
+pub mod violent_substring_search;
