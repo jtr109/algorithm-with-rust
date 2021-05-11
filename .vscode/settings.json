@@ -3,6 +3,7 @@
         "ABACADABRAC",
         "ABRA",
         "CCAPI",
+        "FINDINAHAYSTACKNEEDLE",
         "weigthed"
     ],
     "rust-analyzer.inlayHints.enable": true
