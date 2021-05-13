@@ -1,4 +1,5 @@
 pub mod binary_search_tree;
+pub mod boyer_moore;
 pub mod breadth_first_paths;
 pub mod cc;
 pub mod depth_first_order;
@@ -11,6 +12,7 @@ pub mod directed_edge;
 pub mod edge_weighted_digraph;
 pub mod edge_weighted_graph;
 pub mod graph;
+pub mod horner;
 pub mod lazy_prime_mst;
 pub mod lsd;
 pub mod max_pq;
@@ -24,4 +26,3 @@ pub mod stack;
 pub mod trie;
 pub mod union_find;
 pub mod violent_substring_search;
-pub mod boyer_moore;
