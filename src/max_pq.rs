@@ -32,6 +32,7 @@ impl<T: std::cmp::PartialOrd + Copy> MaxPQ<T> {
 
     pub fn insert(&mut self, v: T) {
         if self.elements.len() == 0 {
+            // 我们的最大堆从 index 1 开始，填充 index 0 用来占位。
             self.elements.push(v);
         }
         self.elements.push(v);
